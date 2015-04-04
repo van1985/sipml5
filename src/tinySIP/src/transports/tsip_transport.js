@@ -407,13 +407,11 @@ function __tsip_transport_ws_onclose(evt) {
     this.o_transport.signal(tsip_transport_event_type_e.STOPPED, evt.reason, null);
 }
 
-var evtData;
 function __tsip_transport_ws_onmessage(evt) {
     tsk_utils_log_info("__tsip_transport_ws_onmessage");
 
     if (evt.data.indexOf('Message-Account')>0){
-        evtData=evt.data;
-        //localStorage.setItem('data', evt.data);
+        localStorage.setItem('data', evt.data);
         console.log('Enter notify evt');
     }
 
