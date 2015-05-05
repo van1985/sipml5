@@ -871,7 +871,7 @@ function __tsip_dialog_invite_media_callback(o_self, e_event_type, e_media_type,
                 o_self.e_next_offer_type = tsip_dialog_invite_next_offer_type_e.NONE;
 
                 var o_action = new tsip_action(tsip_action_type_e.HANGUP);
-                o_action.set_line_resp(603, "Failed to get local SDP");
+                o_action.set_line_resp(tsip_event_code_e.DIALOG_WEBRTC_ERROR, "Failed to get local SDP");
                 o_self.hangup(o_action);
                 break;
             }
@@ -1472,7 +1472,8 @@ function __tsip_dialog_invite_onterm(o_self) {
     }
     
     // signal to the user must be done after the media session is stopped to be sure that all events (e.g. media_removed) will be notified
-    o_self.signal(tsip_event_code_e.DIALOG_TERMINATED,
+    o_self.signal(
+            o_self.last_error.i_code === tsip_event_code_e.DIALOG_WEBRTC_ERROR ? tsip_event_code_e.DIALOG_WEBRTC_ERROR : tsip_event_code_e.DIALOG_TERMINATED,
             o_self.last_error.s_phrase ? o_self.last_error.s_phrase : "Call terminated",
             o_self.last_error.o_message);
 
